@@ -1,0 +1,20 @@
+version: "1.0.0"
+description: BlackBox C++ class component for ESP-IDF
+url: https://github.com/plasmapper/blackbox-esp-cpp
+dependencies:
+  idf: "^5.0"
+  pl_common:
+    path: component
+    git: https://github.com/plasmapper/common-esp-cpp.git
+  pl_uart:
+    path: component
+    git: https://github.com/plasmapper/uart-esp-cpp.git  
+  pl_network:
+    path: component
+    git: https://github.com/plasmapper/network-esp-cpp.git
+  pl_nvs:
+    path: component
+    git: https://github.com/plasmapper/nvs-esp-cpp.git    
+  pl_modbus:
+    path: component
+    git: https://github.com/plasmapper/modbus-esp-cpp.git        
