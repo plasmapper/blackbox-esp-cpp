@@ -10,7 +10,7 @@ BlackBox Component
 Features
 --------
 
-This is an implementation of `this <https://github.com/plasmapper/blackbox>`_ specification for ESP-IDF.
+This is an implementation of `this specification <https://github.com/plasmapper/blackbox>`_ for ESP-IDF.
 
 1. :cpp:class:`PL::BlackBox` - a base class for a `BlackBox <https://github.com/plasmapper/blackbox>`_ device.
    The descendant class should override :cpp:func:`PL::BlackBox::GetFirmwareInfo`.
