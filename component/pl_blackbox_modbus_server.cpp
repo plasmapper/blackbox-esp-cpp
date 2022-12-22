@@ -157,7 +157,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnRead() {
 
   hr.common.enabled = hardwareInterface->IsEnabled();
 
-  if (auto uart = dynamic_cast<Uart*>(hardwareInterface.get())) {
+  if (auto uart = dynamic_cast<PL::Uart*>(hardwareInterface.get())) {
     hr.uart.baudRate = uart->GetBaudRate();
     hr.uart.dataBits = uart->GetDataBits();
     hr.uart.parity = (uint16_t)uart->GetParity();
@@ -165,7 +165,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnRead() {
     hr.uart.flowControl = (uint16_t)uart->GetFlowControl();
   }
 
-  if (auto networkInterface = dynamic_cast<NetworkInterface*>(hardwareInterface.get())) {
+  if (auto networkInterface = dynamic_cast<PL::NetworkInterface*>(hardwareInterface.get())) {
     hr.networkInterface.ipV4DhcpClientEnabled = networkInterface->IsIpV4DhcpClientEnabled();
     hr.networkInterface.ipV6DhcpClientEnabled = networkInterface->IsIpV6DhcpClientEnabled();
     hr.networkInterface.ipV4Address = networkInterface->GetIpV4Address().u32;
@@ -174,7 +174,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnRead() {
     memcpy (hr.networkInterface.ipV6GlobalAddress, networkInterface->GetIpV6GlobalAddress().u32, sizeof (hr.networkInterface.ipV6GlobalAddress));
   }
 
-  if (auto wifiStation = dynamic_cast<WiFiStation*>(hardwareInterface.get())) {
+  if (auto wifiStation = dynamic_cast<PL::WiFiStation*>(hardwareInterface.get())) {
     auto ssid = wifiStation->GetSsid();
     memcpy (hr.wifi.ssid, ssid.data(), std::min (maxNameSize, ssid.size()));
     auto password = wifiStation->GetPassword();
@@ -198,7 +198,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnWrite() {
 
   hardwareInterface->Disable();
 
-  if (auto uart = dynamic_cast<Uart*>(hardwareInterface.get())) {
+  if (auto uart = dynamic_cast<PL::Uart*>(hardwareInterface.get())) {
     uart->SetBaudRate (hr.uart.baudRate);
     uart->SetDataBits (hr.uart.dataBits);
     uart->SetParity ((UartParity)hr.uart.parity);
@@ -206,7 +206,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnWrite() {
     uart->SetFlowControl ((UartFlowControl)hr.uart.flowControl);
   }
 
-  if (auto networkInterface = dynamic_cast<NetworkInterface*>(hardwareInterface.get())) {
+  if (auto networkInterface = dynamic_cast<PL::NetworkInterface*>(hardwareInterface.get())) {
     if (hr.networkInterface.ipV4DhcpClientEnabled) {
       networkInterface->EnableIpV4DhcpClient();
     }
@@ -227,7 +227,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnWrite() {
     }
   }
 
-  if (auto wifiStation = dynamic_cast<WiFiStation*>(hardwareInterface.get())) {
+  if (auto wifiStation = dynamic_cast<PL::WiFiStation*>(hardwareInterface.get())) {
     std::string ssid (hr.wifi.ssid, maxNameSize);
     wifiStation->SetSsid (ssid.c_str());
     std::string password (hr.wifi.password, maxNameSize);
@@ -264,19 +264,19 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationIR::OnRead() {
   auto name = hardwareInterface->GetName();
   memcpy (ir.common.name, name.data(), std::min (maxNameSize, name.size()));
 
-  if (dynamic_cast<Uart*>(hardwareInterface.get()))
+  if (dynamic_cast<PL::Uart*>(hardwareInterface.get()))
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::uart;
 
-  if (auto networkInterface = dynamic_cast<NetworkInterface*>(hardwareInterface.get())) {
+  if (auto networkInterface = dynamic_cast<PL::NetworkInterface*>(hardwareInterface.get())) {
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::networkInterface;
     ir.networkInterface.connected = networkInterface->IsConnected();
     memcpy (ir.networkInterface.ipV6LinkLocalAddress, networkInterface->GetIpV6LinkLocalAddress().u32, sizeof (ir.networkInterface.ipV6LinkLocalAddress));
   }
 
-  if (dynamic_cast<Ethernet*>(hardwareInterface.get()))
+  if (dynamic_cast<PL::Ethernet*>(hardwareInterface.get()))
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::ethernet;
 
-  if (dynamic_cast<WiFiStation*>(hardwareInterface.get()))
+  if (dynamic_cast<PL::WiFiStation*>(hardwareInterface.get()))
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::wifiStation;
 
   hardwareInterface->Unlock();
@@ -303,16 +303,16 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationHR::OnRead() {
 
   hr.common.enabled = server->IsEnabled();
 
-  if (auto networkServer = dynamic_cast<NetworkServer*>(server.get())) {
+  if (auto networkServer = dynamic_cast<PL::NetworkServer*>(server.get())) {
     hr.networkServer.port = networkServer->GetPort();
     hr.networkServer.maxNumberOfClients = networkServer->GetMaxNumberOfClients();
   }
 
-  if (auto modbusServer = dynamic_cast<ModbusServer*>(server.get())) {
+  if (auto modbusServer = dynamic_cast<PL::ModbusServer*>(server.get())) {
     hr.modbusServer.protocol = (uint16_t)modbusServer->GetProtocol();
     hr.modbusServer.stationAddress = modbusServer->GetStationAddress();
     if (auto baseServer = modbusServer->GetBaseServer().lock()) {
-      if (auto networkServer = dynamic_cast<NetworkServer*>(baseServer.get())) {
+      if (auto networkServer = dynamic_cast<PL::NetworkServer*>(baseServer.get())) {
         hr.modbusNetworkServer.port = networkServer->GetPort();
         hr.modbusNetworkServer.maxNumberOfClients = networkServer->GetMaxNumberOfClients();
       }
@@ -336,16 +336,16 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationHR::OnWrite() {
 
   server->Disable();
 
-  if (auto networkServer = dynamic_cast<NetworkServer*>(server.get())) {
+  if (auto networkServer = dynamic_cast<PL::NetworkServer*>(server.get())) {
     networkServer->SetPort (hr.networkServer.port);
     networkServer->SetMaxNumberOfClients (hr.networkServer.maxNumberOfClients);
   }
 
-  if (auto modbusServer = dynamic_cast<ModbusServer*>(server.get())) {
+  if (auto modbusServer = dynamic_cast<PL::ModbusServer*>(server.get())) {
     modbusServer->SetProtocol ((ModbusProtocol)hr.modbusServer.protocol);
     modbusServer->SetStationAddress (std::min (hr.modbusServer.stationAddress, (uint16_t)255));
     if (auto baseServer = modbusServer->GetBaseServer().lock()) {
-      if (auto networkServer = dynamic_cast<NetworkServer*>(baseServer.get())) {
+      if (auto networkServer = dynamic_cast<PL::NetworkServer*>(baseServer.get())) {
         networkServer->SetPort (hr.modbusNetworkServer.port);
         networkServer->SetMaxNumberOfClients (hr.modbusNetworkServer.maxNumberOfClients);
       }
@@ -385,12 +385,12 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationIR::OnRead() {
   if (dynamic_cast<PL::UartServer*>(server.get()))
     ir.common.type = (uint16_t)BlackBoxServerType::uartServer;
 
-  if (dynamic_cast<NetworkServer*>(server.get()))
+  if (dynamic_cast<PL::NetworkServer*>(server.get()))
     ir.common.type = (uint16_t)BlackBoxServerType::networkServer;
 
-  if (auto modbusServer = dynamic_cast<ModbusServer*>(server.get())) {
+  if (auto modbusServer = dynamic_cast<PL::ModbusServer*>(server.get())) {
     if (auto baseServer = modbusServer->GetBaseServer().lock()) {
-      if (dynamic_cast<NetworkServer*>(baseServer.get()))
+      if (dynamic_cast<PL::NetworkServer*>(baseServer.get()))
         ir.common.type = (uint16_t)BlackBoxServerType::modbusTcpServer;
       else
         ir.common.type = (uint16_t)BlackBoxServerType::modbusSerialServer;
