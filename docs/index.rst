@@ -25,7 +25,7 @@ This is an implementation of `this specification <https://github.com/plasmapper/
 
 Examples
 --------
-| `BlackBox firmware and software examples <https://github.com/plasmapper/blackbox/tree/main/examples>`_
+| `BlackBox firmware and software examples <https://github.com/plasmapper/blackbox/tree/main/example>`_
 
 API reference
 -------------
