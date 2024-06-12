@@ -3,6 +3,8 @@ BlackBox Component
 
 .. |COMPONENT| replace:: blackbox
 
+.. |VERSION| replace:: 1.0.0
+
 .. include:: ../../../installation.rst
 
 .. include:: ../../../sdkconfig_network.rst
