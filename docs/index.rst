@@ -41,7 +41,7 @@ Modbus Server
 ^^^^^^^^^^^^^
 
 :cpp:class:`PL::BlackModbusServer` is a :cpp:class:`PL::ModbusServer` class extension that contains memory areas specified
-in `BlackBox Modbus <https://github.com/plasmapper/blackbox/tree/main/modbus.md>` description.
+in `BlackBox Modbus <https://github.com/plasmapper/blackbox/tree/main/modbus.md>`_ description.
 
 Thread safety
 -------------
