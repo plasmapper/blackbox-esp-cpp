@@ -60,7 +60,7 @@ public:
   }
 
   /// @brief Sets the valid parameter values
-  /// @param value valid parameter values
+  /// @param validValues valid parameter values
   void SetValidValues(std::vector<T> validValues) {
     LockGuard lg(*this);
     this->valueValidator = [validValues](T value){ return std::find(validValues.begin(), validValues.end(), value) != validValues.end(); };
