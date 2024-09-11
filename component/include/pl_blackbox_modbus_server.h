@@ -11,9 +11,9 @@ namespace PL {
 class BlackBoxModbusServer : public ModbusServer {
 public:
   /// @brief Memory area size for holding and input registers
-  static const uint16_t registerMemoryAreaSize = 200;
+  inline static const uint16_t registerMemoryAreaSize = 200;
   /// @brief Memory area size for coils
-  static const uint16_t coilMemoryAreaSize = 4;
+  inline static const uint16_t coilMemoryAreaSize = 4;
   /// @brief General configuration memory address
   static const uint16_t generalConfigurationMemoryAddress = 0;
   /// @brief Hardware interface configuration memory address
@@ -27,39 +27,39 @@ public:
   static const uint16_t memoryMapVersion = 1;
 
   /// @brief Maximum device, firmware and hardware name size
-  static const size_t maxNameSize = 32;
+  inline static const size_t maxNameSize = 32;
   /// @brief Maximum Wi-Fi SSID size
-  static const size_t maxWiFiSsidSize = 32;
+  inline static const size_t maxWiFiSsidSize = 32;
   /// @brief Maximum Wi-Fi password size
-  static const size_t maxWiFiPasswordSize = 64;
+  inline static const size_t maxWiFiPasswordSize = 64;
 
-  /// @brief Create an UART BlackBox Modbus server with shared transaction buffer
+  /// @brief Creates a stream BlackBox Modbus server with shared transaction buffer
   /// @param blackBox BlackBox
   /// @param port UART port
   /// @param protocol Modbus protocol
   /// @param stationAddress station address
   /// @param buffer transaction buffer
-  BlackBoxModbusServer (std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Uart> uart, ModbusProtocol protocol, uint8_t stationAddress, std::shared_ptr<Buffer> buffer);
+  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Stream> strean, ModbusProtocol protocol, uint8_t stationAddress, std::shared_ptr<Buffer> buffer);
 
-  /// @brief Create an UART BlackBox Modbus server and allocate transaction buffer
+  /// @brief Creates a stream BlackBox Modbus server and allocate transaction buffer
   /// @param blackBox BlackBox
   /// @param port UART port
   /// @param protocol Modbus protocol
   /// @param stationAddress station address
   /// @param bufferSize transaction buffer size
-  BlackBoxModbusServer (std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Uart> uart, ModbusProtocol protocol, uint8_t stationAddress, size_t bufferSize = defaultBufferSize);
+  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Stream> stream, ModbusProtocol protocol, uint8_t stationAddress, size_t bufferSize = defaultBufferSize);
   
-  /// @brief Create a network BlackBox Modbus server with shared transaction buffer
+  /// @brief Creates a network BlackBox Modbus server with shared transaction buffer
   /// @param blackBox BlackBox
   /// @param port network port
   /// @param buffer transaction buffer
-  BlackBoxModbusServer (std::shared_ptr<BlackBox> blackBox, uint16_t port, std::shared_ptr<Buffer> buffer);
+  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, uint16_t port, std::shared_ptr<Buffer> buffer);
   
-  /// @brief Create a network BlackBox Modbus server and allocate transaction buffer
+  /// @brief Creates a network BlackBox Modbus server and allocate transaction buffer
   /// @param blackBox BlackBox
   /// @param port network port
   /// @param bufferSize transaction buffer size
-  BlackBoxModbusServer (std::shared_ptr<BlackBox> blackBox, uint16_t port, size_t bufferSize = defaultBufferSize);
+  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, uint16_t port, size_t bufferSize = defaultBufferSize);
 
 private:
   std::shared_ptr<BlackBox> blackBox;
@@ -116,7 +116,7 @@ private:
       } common;
 
       struct Uart {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
         uint32_t baudRate;
         uint16_t dataBits;
         uint16_t parity;
@@ -137,14 +137,18 @@ private:
       } networkInterface;
       
       struct Ethernet {
-        uint8_t network[sizeof (NetworkInterface)];
+        uint8_t networkInterface[sizeof(NetworkInterface)];
       } ethernet;
       
       struct WiFi {
-        uint8_t network[sizeof (NetworkInterface)];
+        uint8_t networkInterface[sizeof(NetworkInterface)];
         char ssid[maxWiFiSsidSize];
         char password[maxWiFiPasswordSize];
       } wifi;
+
+      struct UsbDeviceCdc {
+        uint8_t common[sizeof(Common)];
+      } usbDeviceCdc;
     } hardwareInterfaceConfigurationHR;
 
     union HardwareInterfaceConfigurationIR {
@@ -156,7 +160,7 @@ private:
       } common;
 
       struct Uart {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
       } uart;
       
       struct NetworkInterface {
@@ -169,12 +173,16 @@ private:
       } networkInterface;
       
       struct Ethernet {
-        uint8_t network[sizeof (NetworkInterface)];
+        uint8_t networkInterface[sizeof(NetworkInterface)];
       } ethernet;
       
       struct WiFi {
-        uint8_t network[sizeof (NetworkInterface)];
+        uint8_t networkInterface[sizeof(NetworkInterface)];
       } wifi;
+
+      struct UsbDeviceCdc {
+        uint8_t common[sizeof(Common)];
+      } usbDeviceCdc;
     } hardwareInterfaceConfigurationIR;
 
     union ServerConfigurationHR {
@@ -184,27 +192,35 @@ private:
         uint16_t clearStickyStatusBits;
       } common;
 
-      struct UartServer {
-        uint8_t common[sizeof (Common)];
-      } uartServer;
+      struct StreamServer {
+        uint8_t common[sizeof(Common)];
+      } streamServer;
       
       struct NetworkServer {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
         uint16_t port;
         uint16_t maxNumberOfClients;
       } networkServer;
       
       struct ModbusServer {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
         uint16_t protocol;
         uint16_t stationAddress;
       } modbusServer;
       
-      struct ModbusNetworkServer {
-        uint8_t modbusServer[sizeof (ModbusServer)];
+      struct NetworkModbusServer {
+        uint8_t modbusServer[sizeof(ModbusServer)];
         uint16_t port;
         uint16_t maxNumberOfClients;
-      } modbusNetworkServer;
+      } networkModbusServer;
+
+      struct HttpServer {
+        uint8_t networkServer[sizeof(NetworkServer)];
+      } httpServer;
+
+      struct MdnsServer {
+        uint8_t networkServer[sizeof(NetworkServer)];
+      } mdnsServer;
     } serverConfigurationHR;
 
     union ServerConfigurationIR {
@@ -215,28 +231,36 @@ private:
         char name[maxNameSize];
       } common;
 
-      struct UartServer {
-        uint8_t common[sizeof (Common)];
-      } uartServer;
+      struct StreamServer {
+        uint8_t common[sizeof(Common)];
+      } streamServer;
       
       struct NetworkServer {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
       } networkServer;
       
       struct ModbusServer {
-        uint8_t common[sizeof (Common)];
+        uint8_t common[sizeof(Common)];
       } modbusServer;
       
-      struct ModbusNetworkServer {
-        uint8_t common[sizeof (Common)];
-      } modbusNetworkServer;
+      struct NetworkModbusServer {
+        uint8_t common[sizeof(Common)];
+      } networkModbusServer;
+
+      struct HttpServer {
+        uint8_t networkServer[sizeof(NetworkServer)];
+      } httpServer;
+
+      struct MdnsServer {
+        uint8_t networkServer[sizeof(NetworkServer)];
+      } mdnsServer;
     } serverConfigurationIR;
   } memoryData;
   #pragma pack(pop)
 
   class GeneralConfigurationHR : public ModbusMemoryArea {
   public:
-    GeneralConfigurationHR (BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
+    GeneralConfigurationHR(BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
     esp_err_t OnRead() override;
     esp_err_t OnWrite() override;
   
@@ -246,7 +270,7 @@ private:
 
   class GeneralConfigurationIR : public ModbusMemoryArea {
   public:
-    GeneralConfigurationIR (BlackBoxModbusServer& modbusServer);
+    GeneralConfigurationIR(BlackBoxModbusServer& modbusServer);
     esp_err_t OnRead() override;
   
   private:
@@ -255,7 +279,7 @@ private:
 
   class HardwareInterfaceConfigurationHR : public ModbusMemoryArea {
   public:
-    HardwareInterfaceConfigurationHR (BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
+    HardwareInterfaceConfigurationHR(BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
     esp_err_t OnRead() override;
     esp_err_t OnWrite() override;
   
@@ -265,7 +289,7 @@ private:
 
   class HardwareInterfaceConfigurationIR : public ModbusMemoryArea {
   public:
-    HardwareInterfaceConfigurationIR (BlackBoxModbusServer& modbusServer);
+    HardwareInterfaceConfigurationIR(BlackBoxModbusServer& modbusServer);
     esp_err_t OnRead() override;
   
   private:
@@ -274,7 +298,7 @@ private:
 
   class ServerConfigurationHR : public ModbusMemoryArea {
   public:
-    ServerConfigurationHR (BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
+    ServerConfigurationHR(BlackBoxModbusServer& modbusServer, ModbusMemoryType memoryType, size_t size);
     esp_err_t OnRead() override;
     esp_err_t OnWrite() override;
   
@@ -284,7 +308,7 @@ private:
 
   class ServerConfigurationIR : public ModbusMemoryArea {
   public:
-    ServerConfigurationIR (BlackBoxModbusServer& modbusServer);
+    ServerConfigurationIR(BlackBoxModbusServer& modbusServer);
     esp_err_t OnRead() override;
   
   private:

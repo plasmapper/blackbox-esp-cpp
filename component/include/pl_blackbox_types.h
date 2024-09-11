@@ -40,7 +40,9 @@ enum class BlackBoxHardwareInterfaceType : uint8_t {
   /// @brief Ethernet
   ethernet = 3,
   /// @brief Wi-Fi station
-  wifiStation = 4
+  wifiStation = 4,
+  /// @brief USB device CDC
+  usbDeviceCdc = 5
 };
 
 //==============================================================================
@@ -49,14 +51,18 @@ enum class BlackBoxHardwareInterfaceType : uint8_t {
 enum class BlackBoxServerType : uint8_t {
   /// @brief unknown
   unknown = 0,
-  /// @brief UART server
-  uartServer = 1,
+  /// @brief stream server
+  streamServer = 1,
   /// @brief network server
   networkServer = 2,
   /// @brief Modbus serial server
-  modbusSerialServer = 3,
+  streamModbusServer = 3,
   /// @brief Modbus TCP server
-  modbusTcpServer = 4
+  networkModbusServer = 4,
+  /// @brief HTTP server
+  httpServer = 5,
+  /// @brief mDNS server
+  mdnsServer = 6
 };
 
 //==============================================================================

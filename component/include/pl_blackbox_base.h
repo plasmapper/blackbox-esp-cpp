@@ -1,5 +1,17 @@
 #pragma once
 #include "pl_blackbox_types.h"
+#include "pl_blackbox_hardware_interface_configuration.h"
+#include "pl_blackbox_uart_configuration.h"
+#include "pl_blackbox_network_interface_configuration.h"
+#include "pl_blackbox_ethernet_configuration.h"
+#include "pl_blackbox_wifi_station_configuration.h"
+#include "pl_blackbox_usb_device_cdc_configuration.h"
+#include "pl_blackbox_server_configuration.h"
+#include "pl_blackbox_stream_server_configuration.h"
+#include "pl_blackbox_network_server_configuration.h"
+#include "pl_blackbox_http_server_configuration.h"
+#include "pl_blackbox_mdns_server_configuration.h"
+#include "pl_blackbox_modbus_server_configuration.h"
 
 //==============================================================================
 
@@ -10,8 +22,11 @@ namespace PL {
 /// @brief Base class for the BlackBox device
 class BlackBox : public Lockable {
 public:
-  /// @brief Hardware information NVS namespace
-  static const std::string hardwareInfoNvsNamespace;
+  /// @brief Default hardware info NVS namespace
+  static const std::string defaultHardwareInfoNvsNamespaceName;
+  /// @brief Default general configuration NVS namespace
+  static const std::string defaultGeneralConfigurationNvsNamespaceName;
+
   /// @brief Hardware name NVS key
   static const std::string hardwareInfoNameNvsKey;
   /// @brief Hardware major version NVS key
@@ -23,125 +38,136 @@ public:
   /// @brief Hardware UID NVS key
   static const std::string hardwareInfoUidNvsKey;
 
-  /// @brief Configuration NVS namespace
-  static const std::string configurationNvsNamespace;
-  /// @brief Device name NVS key
-  static const std::string configurationDeviceNameNvsKey;
-  /// @brief Hardware interface NVS key prefix
-  static const std::string configurationHardwareInterfaceNvsKeyPrefix;
-  /// @brief Hardware interface enabled NVS key suffix
-  static const std::string configurationHardwareInterfaceEnabledNvsKeySuffix;
-  /// @brief Server NVS key prefix
-  static const std::string configurationServerNvsKeyPrefix;
-  /// @brief Server enabled NVS key suffix
-  static const std::string configurationServerEnabledNvsKeySuffix;
+  /// @brief General configuration device name NVS key
+  static const std::string generalConfigurationDeviceNameNvsKey;
 
-  /// @brief UART baud rate NVS key suffix
-  static const std::string configurationUartBaudRateNvsKeySuffix;
-  /// @brief UART data bits NVS key suffix
-  static const std::string configurationUartDataBitsNvsKeySuffix;
-  /// @brief UART parity NVS key suffix
-  static const std::string configurationUartParityNvsKeySuffix;
-  /// @brief UART stop bits NVS key suffix
-  static const std::string configurationUartStopBitsNvsKeySuffix;
-  /// @brief UART flow control NVS key suffix
-  static const std::string configurationUartFlowControlNvsKeySuffix;
+  /// @brief Creates a BlackBox device
+  BlackBox();
+  ~BlackBox() {}
+  BlackBox(const BlackBox&) = delete;
+  BlackBox& operator=(const BlackBox&) = delete;
 
-  /// @brief Network interface IPv4 address NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV4AddressNvsKeySuffix;
-  /// @brief Network interface IPv4 netmask NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV4NetmaskNvsKeySuffix;
-  /// @brief Network interface IPv4 gateway NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV4GatewayNvsKeySuffix;
-  /// @brief Network interface IPv6 global address NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV6GlobalAddressNvsKeySuffix;
-  /// @brief Network interface IPv4 DHCP client enabled NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV4DhcpClientEnabledNvsKeySuffix;
-  /// @brief Network interface IPv6 DHCP client enabled NVS key suffix
-  static const std::string configurationNetworkInterfaceIpV6DhcpClientEnabledNvsKeySuffix;
-  
-  /// @brief WiFi SSID NVS key suffix
-  static const std::string configurationWiFiSsidNvsKeySuffix;
-  /// @brief WiFi Password NVS key suffix
-  static const std::string configurationWiFiPasswordNvsKeySuffix;
-
-  /// @brief Network server port NVS key suffix
-  static const std::string configurationNetworkServerPortNvsKeySuffix;
-  /// @brief Network server maximum number of clients NVS key suffix
-  static const std::string configurationNetworkServerMaxNumberOfClientsNvsKeySuffix;
-
-  /// @brief Modbus server protocol NVS key suffix
-  static const std::string configurationModbusServerProtocolNvsKeySuffix;
-  /// @brief Modbus server station address NVS key suffix
-  static const std::string configurationModbusServerStationAddressNvsKeySuffix;
-
-  /// @brief Create a BlackBox device
-  BlackBox() {}
-
-  esp_err_t Lock (TickType_t timeout = portMAX_DELAY) override;
+  esp_err_t Lock(TickType_t timeout = portMAX_DELAY) override;
   esp_err_t Unlock() override;
 
-  /// @brief Restart the device
-  /// @return error code
-  esp_err_t Restart();
+  /// @brief Gets the hardware info NVS namespace name
+  /// @return hardware info NVS namespace name
+  std::string GetHardwareInfoNvsNamespaceName();
 
-  /// @brief Load the device configuration (default: load from NVS)
-  virtual void LoadConfiguration();
+  /// @brief Sets the hardware info NVS namespace name
+  /// @param nvsNamespaceName hardware info NVS namespace name
+  void SetHardwareInfoNvsNamespaceName(const std::string& nvsNamespaceName);
 
-  /// @brief Save the device configuration (default: save to NVS)
-  virtual void SaveConfiguration();
+  /// @brief Gets the general configuration NVS namespace name
+  /// @return general configuration NVS namespace name
+  std::string GetGeneralConfigurationNvsNamespaceName();
 
-  /// @brief Erase the device configuration (default: erase from NVS)
-  virtual void EraseConfiguration();
+  /// @brief Sets the general configuration NVS namespace name
+  /// @param nvsNamespaceName general configuration NVS namespace name
+  void SetGeneralConfigurationNvsNamespaceName(const std::string& nvsNamespaceName);
 
-  /// @brief Get the device name
-  /// @return name
-  std::string GetName();
-
-  /// @brief Set the device name
-  /// @param name 
-  void SetName (const std::string& name);
-
-  /// @brief Get the hardware information (default: load from NVS)
+  /// @brief Gets the hardware information
   /// @return hardware information
   virtual BlackBoxHardwareInfo GetHardwareInfo();
 
-  /// @brief Get the firmware information
+  /// @brief Gets the firmware information
   /// @return firmware information
   virtual BlackBoxFirmwareInfo GetFirmwareInfo() = 0;
 
-  /// @brief Get the hardware interfaces
-  /// @return hardware interfaces
-  std::vector<std::shared_ptr<HardwareInterface>> GetHardwareInterfaces();
+  /// @brief Gets the device name
+  /// @return device name
+  std::string GetDeviceName();
 
-  /// @brief Add the hardware interface 
-  /// @param hardwareInterface hardware interface 
-  void AddHardwareInterface (std::shared_ptr<HardwareInterface> hardwareInterface);
+  /// @brief Sets the device name
+  /// @param name device name
+  void SetDeviceName(const std::string& name);
 
-  /// @brief Get the servers
-  /// @return servers
-  std::vector<std::shared_ptr<Server>> GetServers();
+  /// @brief Restarts the device
+  /// @return error code
+  virtual esp_err_t Restart();
 
-  /// @brief Add the server 
-  /// @param hardwareInterface server
-  void AddServer (std::shared_ptr<Server> server);
-
-  /// @brief Check if the device has been restarted
+  /// @brief Checks if the device has been restarted
   /// @return true if the device has been restarted
   bool GetRestartedFlag();
 
-  /// @brief Clear the reset flag
+  /// @brief Clears the reset flag
   void ClearRestartedFlag();
+
+  /// @brief Adds a configuration
+  void AddConfiguration(std::shared_ptr<BlackBoxConfiguration> configuration);
+
+  /// @brief Adds a hardware interface configuration
+  /// @param hardwareInterface hardware interface
+  /// @return hardware interface configuration
+  std::shared_ptr<BlackBoxHardwareInterfaceConfiguration> AddHardwareInterfaceConfiguration(std::shared_ptr<HardwareInterface> hardwareInterface, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxUartConfiguration> AddUartConfiguration(std::shared_ptr<Uart> hardwareInterface, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxNetworkInterfaceConfiguration> AddNetworkInterfaceConfiguration(std::shared_ptr<NetworkInterface> hardwareInterface, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxEthernetConfiguration> AddEthernetConfiguration(std::shared_ptr<Ethernet> hardwareInterface, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxWiFiStationConfiguration> AddWiFiConfiguration(std::shared_ptr<WiFiStation> hardwareInterface, std::string nvsNamespaceName);
+#if TINYUSB_CDC_ENABLED
+  std::shared_ptr<BlackBoxUsbDeviceCdcConfiguration> AddUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> hardwareInterface, std::string nvsNamespaceName);
+#endif
+
+  /// @brief Adds a server configuration
+  /// @param server server
+  /// @return server configuration
+  std::shared_ptr<BlackBoxServerConfiguration> AddServerConfiguration(std::shared_ptr<Server> server, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxStreamServerConfiguration> AddStreamServerConfiguration(std::shared_ptr<StreamServer> server, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxNetworkServerConfiguration> AddNetworkServerConfiguration(std::shared_ptr<NetworkServer> server, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxModbusServerConfiguration> AddModbusServerConfiguration(std::shared_ptr<ModbusServer> server, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxHttpServerConfiguration> AddHttpServerConfiguration(std::shared_ptr<HttpServer> server, std::string nvsNamespaceName);
+  std::shared_ptr<BlackBoxMdnsServerConfiguration> AddMdnsServerConfiguration(std::shared_ptr<MdnsServer> server, std::string nvsNamespaceName);
+
+  /// @brief Gets all configurations
+  /// @return configurations
+  std::vector<std::shared_ptr<BlackBoxConfiguration>> GetAllConfigurations();
+
+  /// @brief Gets the hardware interface configurations
+  /// @return hardware interface configurations
+  std::vector<std::shared_ptr<BlackBoxHardwareInterfaceConfiguration>> GetHardwareInterfaceConfigurations();
+
+  /// @brief Gets the server configurations
+  /// @return server configurations
+  std::vector<std::shared_ptr<BlackBoxServerConfiguration>> GetServerConfigurations();
+
+  /// @brief Loads all configurations
+  void LoadAllConfigurations();
+
+  /// @brief Saves all configurations
+  void SaveAllConfigurations();
+
+  /// @brief Erases all configurations
+  void EraseAllConfigurations();
+
+  /// @brief Applies hardware interface configurations
+  void ApplyHardwareInterfaceConfigurations();
+
+  /// @brief Applies server configurations
+  void ApplyServerConfigurations();
 
 private:
   Mutex mutex;
+  std::string hardwareInfoNvsNamespaceName = defaultHardwareInfoNvsNamespaceName;
   BlackBoxHardwareInfo hardwareInfo = {};
   bool hardwareInfoLoaded = false;
-  std::string name;
-  std::vector<std::shared_ptr<HardwareInterface>> hardwareInterfaces;
-  std::vector<std::shared_ptr<Server>> servers;
+  std::string deviceName;
   bool restartedFlag = true;
-  
+  std::vector<std::shared_ptr<BlackBoxConfiguration>> allConfigurations;
+  std::vector<std::shared_ptr<BlackBoxHardwareInterfaceConfiguration>> hardwareInterfaceConfigurations;
+  std::vector<std::shared_ptr<BlackBoxServerConfiguration>> serverConfigurations;
+
+  class GeneralConfiguration : public BlackBoxConfiguration {
+    public:
+      GeneralConfiguration(BlackBox& blackBox);
+
+      void Load() override;
+      void Save() override;
+
+    private:
+      BlackBox& blackBox;
+  };
+
+  std::shared_ptr<GeneralConfiguration> generalConfiguration;
 };
 
 //==============================================================================
