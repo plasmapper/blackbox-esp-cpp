@@ -134,6 +134,12 @@ void BlackBox::ClearRestartedFlag() {
 
 //==============================================================================
 
+void BlackBox::AddConfiguration(std::shared_ptr<BlackBoxConfiguration> configuration) {
+  allConfigurations.push_back(configuration);
+}
+
+//==============================================================================
+
 std::shared_ptr<BlackBoxHardwareInterfaceConfiguration> BlackBox::AddHardwareInterfaceConfiguration(std::shared_ptr<HardwareInterface> hardwareInterface, std::string nvsNamespaceName) {
   auto configuration = std::make_shared<BlackBoxHardwareInterfaceConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);

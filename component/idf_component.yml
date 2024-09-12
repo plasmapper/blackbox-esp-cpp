@@ -8,7 +8,7 @@ dependencies:
   plasmapper/pl_uart: "^1.1.0"
   plasmapper/pl_network: "^1.1.1"
   plasmapper/pl_nvs: "^1.0.0"
-  plasmapper/pl_modbus: "^1.2.0"
+  plasmapper/pl_modbus: "^1.2.1"
   plasmapper/pl_http: "^1.1.0"
   plasmapper/pl_mdns: "^1.1.0"
   plasmapper/pl_usb:
