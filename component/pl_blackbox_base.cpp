@@ -31,7 +31,12 @@ BlackBox::BlackBox() : generalConfiguration(std::make_shared<GeneralConfiguratio
 //==============================================================================
 
 esp_err_t BlackBox::Lock(TickType_t timeout) {
-  ESP_RETURN_ON_ERROR(mutex.Lock(timeout), TAG, "mutex lock failed");
+  esp_err_t error = mutex.Lock(timeout);
+  if (error == ESP_OK)
+    return ESP_OK;
+  if (error == ESP_ERR_TIMEOUT && timeout == 0)
+    return ESP_ERR_TIMEOUT;
+  ESP_RETURN_ON_ERROR(error, TAG, "mutex lock failed");
   return ESP_OK;
 }
 
