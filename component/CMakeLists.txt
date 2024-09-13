@@ -7,4 +7,4 @@ idf_component_register(SRCS "pl_blackbox_mdns_server_configuration.cpp" "pl_blac
                        "pl_blackbox_server_configuration.cpp" "pl_blackbox_stream_server_configuration.cpp" "pl_blackbox_network_server_configuration.cpp"
                        "pl_blackbox_modbus_server_configuration.cpp" "pl_blackbox_http_server_configuration.cpp" "pl_blackbox_mdns_server_configuration.cpp"
                        "pl_blackbox_modbus_server.cpp"
-                       INCLUDE_DIRS "include" REQUIRES "pl_common" "pl_uart" "pl_network" "pl_nvs" "pl_modbus")
+                       INCLUDE_DIRS "include" REQUIRES "pl_common" "pl_uart" "pl_network" "pl_nvs" "pl_modbus" "pl_http" "pl_mdns")
