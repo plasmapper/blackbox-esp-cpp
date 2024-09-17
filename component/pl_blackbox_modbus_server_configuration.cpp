@@ -32,7 +32,7 @@ BlackBoxModbusServerConfiguration::BlackBoxModbusServerConfiguration(std::shared
 //==============================================================================
 
 void BlackBoxModbusServerConfiguration::Load() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readOnly);
   uint8_t u8Value;
   uint16_t u16Value;
@@ -58,7 +58,7 @@ void BlackBoxModbusServerConfiguration::Load() {
 //==============================================================================
 
 void BlackBoxModbusServerConfiguration::Save() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
 
   nvsNamespace.Write(protocolNvsKey, (uint8_t)protocol.GetValue());
@@ -76,7 +76,7 @@ void BlackBoxModbusServerConfiguration::Save() {
 //==============================================================================
 
 void BlackBoxModbusServerConfiguration::Apply() {
-  LockGuard lg(*this, *modbusServer);
+  LockGuard lg(mutex, *modbusServer);
   
   modbusServer->SetProtocol(protocol.GetValue());
   modbusServer->SetStationAddress(stationAddress.GetValue());

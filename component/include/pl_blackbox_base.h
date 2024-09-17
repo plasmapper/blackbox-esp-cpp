@@ -20,7 +20,7 @@ namespace PL {
 //==============================================================================
 
 /// @brief Base class for the BlackBox device
-class BlackBox : public Lockable {
+class BlackBox {
 public:
   /// @brief Default hardware info NVS namespace
   static const std::string defaultHardwareInfoNvsNamespaceName;
@@ -46,9 +46,6 @@ public:
   ~BlackBox() {}
   BlackBox(const BlackBox&) = delete;
   BlackBox& operator=(const BlackBox&) = delete;
-
-  esp_err_t Lock(TickType_t timeout = portMAX_DELAY) override;
-  esp_err_t Unlock() override;
 
   /// @brief Gets the hardware info NVS namespace name
   /// @return hardware info NVS namespace name
@@ -162,9 +159,15 @@ private:
 
       void Load() override;
       void Save() override;
+      void Erase() override;
+
+      std::string GetNvsNamespaceName();
+      void SetNvsNamespaceName(const std::string& nvsNamespaceName);
 
     private:
+      Mutex mutex;
       BlackBox& blackBox;
+      std::string nvsNamespaceName;
   };
 
   std::shared_ptr<GeneralConfiguration> generalConfiguration;

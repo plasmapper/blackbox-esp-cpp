@@ -3,10 +3,6 @@
 
 //==============================================================================
 
-static const char* TAG = "pl_blackbox_base";
-
-//==============================================================================
-
 namespace PL {
 
 //==============================================================================
@@ -30,34 +26,15 @@ BlackBox::BlackBox() : generalConfiguration(std::make_shared<GeneralConfiguratio
 
 //==============================================================================
 
-esp_err_t BlackBox::Lock(TickType_t timeout) {
-  esp_err_t error = mutex.Lock(timeout);
-  if (error == ESP_OK)
-    return ESP_OK;
-  if (error == ESP_ERR_TIMEOUT && timeout == 0)
-    return ESP_ERR_TIMEOUT;
-  ESP_RETURN_ON_ERROR(error, TAG, "mutex lock failed");
-  return ESP_OK;
-}
-
-//==============================================================================
-
-esp_err_t BlackBox::Unlock() {
-  ESP_RETURN_ON_ERROR(mutex.Unlock(), TAG, "mutex unlock failed");
-  return ESP_OK;
-}
-
-//==============================================================================
-
 std::string BlackBox::GetHardwareInfoNvsNamespaceName() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return hardwareInfoNvsNamespaceName;
 }
 
 //==============================================================================
 
 void BlackBox::SetHardwareInfoNvsNamespaceName(const std::string& nvsNamespaceName) {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   hardwareInfoNvsNamespaceName = nvsNamespaceName;
 }
 
@@ -70,7 +47,7 @@ std::string BlackBox::GetGeneralConfigurationNvsNamespaceName() {
 //==============================================================================
 
 void BlackBox::SetGeneralConfigurationNvsNamespaceName(const std::string& nvsNamespaceName) {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   generalConfiguration->SetNvsNamespaceName(nvsNamespaceName);
   hardwareInfoLoaded = false;
 }
@@ -78,7 +55,7 @@ void BlackBox::SetGeneralConfigurationNvsNamespaceName(const std::string& nvsNam
 //==============================================================================
 
 BlackBoxHardwareInfo BlackBox::GetHardwareInfo() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   if (hardwareInfoLoaded)
     return hardwareInfo;
     
@@ -104,21 +81,21 @@ BlackBoxHardwareInfo BlackBox::GetHardwareInfo() {
 //==============================================================================
 
 std::string BlackBox::GetDeviceName() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return deviceName;
 }
 
 //==============================================================================
 
 void BlackBox::SetDeviceName(const std::string& name) {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   deviceName = name;
 }
 
 //==============================================================================
 
 esp_err_t BlackBox::Restart() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   esp_restart();
   return ESP_OK;
 }
@@ -126,14 +103,14 @@ esp_err_t BlackBox::Restart() {
 //==============================================================================
 
 bool BlackBox::GetRestartedFlag() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return restartedFlag;
 }
 
 //==============================================================================
 
 void BlackBox::ClearRestartedFlag() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   restartedFlag = false;
 }
 
@@ -256,28 +233,28 @@ std::shared_ptr<BlackBoxMdnsServerConfiguration> BlackBox::AddMdnsServerConfigur
 //==============================================================================
 
 std::vector<std::shared_ptr<BlackBoxConfiguration>> BlackBox::GetAllConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return allConfigurations;
 }
 
 //==============================================================================
 
 std::vector<std::shared_ptr<BlackBoxHardwareInterfaceConfiguration>> BlackBox::GetHardwareInterfaceConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return hardwareInterfaceConfigurations;
 }
 
 //==============================================================================
 
 std::vector<std::shared_ptr<BlackBoxServerConfiguration>> BlackBox::GetServerConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   return serverConfigurations;
 }
 
 //==============================================================================
 
 void BlackBox::LoadAllConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   for (auto& configuration : allConfigurations)
     configuration->Load();
 }
@@ -285,7 +262,7 @@ void BlackBox::LoadAllConfigurations() {
 //==============================================================================
 
 void BlackBox::SaveAllConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   for (auto& configuration : allConfigurations)
     configuration->Save();
 }
@@ -293,7 +270,7 @@ void BlackBox::SaveAllConfigurations() {
 //==============================================================================
 
 void BlackBox::EraseAllConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   for (auto& configuration : allConfigurations)
     configuration->Erase();
 }
@@ -301,7 +278,7 @@ void BlackBox::EraseAllConfigurations() {
 //==============================================================================
 
 void BlackBox::ApplyHardwareInterfaceConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   for (auto& configuration : hardwareInterfaceConfigurations)
     configuration->Apply();
 }
@@ -309,19 +286,19 @@ void BlackBox::ApplyHardwareInterfaceConfigurations() {
 //==============================================================================
 
 void BlackBox::ApplyServerConfigurations() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   for (auto& configuration : serverConfigurations)
     configuration->Apply();
 }
 
 //==============================================================================
 
-BlackBox::GeneralConfiguration::GeneralConfiguration(BlackBox& blackBox) : BlackBoxConfiguration(defaultGeneralConfigurationNvsNamespaceName), blackBox(blackBox) {}
+BlackBox::GeneralConfiguration::GeneralConfiguration(BlackBox& blackBox) : blackBox(blackBox), nvsNamespaceName(defaultGeneralConfigurationNvsNamespaceName) {}
   
 //==============================================================================
 
 void BlackBox::GeneralConfiguration::Load() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readOnly);
   std::string stringValue;
 
@@ -332,10 +309,32 @@ void BlackBox::GeneralConfiguration::Load() {
 //==============================================================================
 
 void BlackBox::GeneralConfiguration::Save() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
 
   nvsNamespace.Write(generalConfigurationDeviceNameNvsKey, blackBox.GetDeviceName());
+}
+
+//==============================================================================
+
+void BlackBox::GeneralConfiguration::Erase() {
+  LockGuard lg(mutex);
+  NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
+  nvsNamespace.Erase();
+}
+
+//==============================================================================
+
+std::string BlackBox::GeneralConfiguration::GetNvsNamespaceName() {
+  LockGuard lg(mutex);
+  return nvsNamespaceName;
+}
+
+//==============================================================================
+
+void BlackBox::GeneralConfiguration::SetNvsNamespaceName(const std::string& nvsNamespaceName) {
+  LockGuard lg(mutex);
+  this->nvsNamespaceName = nvsNamespaceName;
 }
 
 //==============================================================================

@@ -17,7 +17,7 @@ BlackBoxNetworkServerConfiguration::BlackBoxNetworkServerConfiguration(std::shar
 //==============================================================================
 
 void BlackBoxNetworkServerConfiguration::Load() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readOnly);
   uint16_t u16Value;
   uint16_t u32Value;
@@ -33,7 +33,7 @@ void BlackBoxNetworkServerConfiguration::Load() {
 //==============================================================================
 
 void BlackBoxNetworkServerConfiguration::Save() {
-  LockGuard lg(*this);
+  LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
   
   nvsNamespace.Write(portNvsKey, port.GetValue());
@@ -45,7 +45,7 @@ void BlackBoxNetworkServerConfiguration::Save() {
 //==============================================================================
 
 void BlackBoxNetworkServerConfiguration::Apply() {
-  LockGuard lg(*this, *networkServer);
+  LockGuard lg(mutex, *networkServer);
 
   networkServer->SetPort(port.GetValue());
   networkServer->SetMaxNumberOfClients(maxNumberOfClients.GetValue());

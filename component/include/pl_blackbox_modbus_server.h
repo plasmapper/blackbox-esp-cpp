@@ -39,9 +39,9 @@ public:
   /// @param protocol Modbus protocol
   /// @param stationAddress station address
   /// @param buffer transaction buffer
-  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Stream> strean, ModbusProtocol protocol, uint8_t stationAddress, std::shared_ptr<Buffer> buffer);
+  BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, std::shared_ptr<Stream> stream, ModbusProtocol protocol, uint8_t stationAddress, std::shared_ptr<Buffer> buffer);
 
-  /// @brief Creates a stream BlackBox Modbus server and allocate transaction buffer
+  /// @brief Creates a stream BlackBox Modbus server and allocates a transaction buffer
   /// @param blackBox BlackBox
   /// @param port UART port
   /// @param protocol Modbus protocol
@@ -55,7 +55,7 @@ public:
   /// @param buffer transaction buffer
   BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, uint16_t port, std::shared_ptr<Buffer> buffer);
   
-  /// @brief Creates a network BlackBox Modbus server and allocate transaction buffer
+  /// @brief Creates a network BlackBox Modbus server and allocates a transaction buffer
   /// @param blackBox BlackBox
   /// @param port network port
   /// @param bufferSize transaction buffer size

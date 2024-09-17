@@ -15,7 +15,7 @@ namespace PL {
 
 /// @brief BlackBox configuration parameter
 template <class T>
-class BlackBoxConfigurationParameter : public Lockable {
+class BlackBoxConfigurationParameter {
 public:
   /// @brief Creates a BlackBox configuration parameter
   BlackBoxConfigurationParameter(T value) {
@@ -26,19 +26,9 @@ public:
   BlackBoxConfigurationParameter(const BlackBoxConfigurationParameter&) = delete;
   BlackBoxConfigurationParameter& operator=(const BlackBoxConfigurationParameter&) = delete;
 
-  esp_err_t Lock(TickType_t timeout = portMAX_DELAY) override {
-    ESP_RETURN_ON_ERROR(mutex.Lock(timeout), CONFIG_PARAM_TAG, "mutex lock failed");
-    return ESP_OK;
-  }
-  
-  esp_err_t Unlock() override {
-    ESP_RETURN_ON_ERROR(mutex.Unlock(), CONFIG_PARAM_TAG, "mutex unlock failed");
-    return ESP_OK;
-  }
-
   /// @brief Gets the parameter value
   T GetValue() {
-    LockGuard lg(*this);
+    LockGuard lg(mutex);
     return value;
   }
   
@@ -46,7 +36,7 @@ public:
   /// @param value parameter value
   /// @return error code
   esp_err_t SetValue(T value) {
-    LockGuard lg(*this);
+    LockGuard lg(mutex);
     ESP_RETURN_ON_FALSE(valueValidator(value), ESP_ERR_INVALID_ARG, CONFIG_PARAM_TAG, "parameter value validation failed");
     this->value = value;
     return ESP_OK;
@@ -55,14 +45,14 @@ public:
   /// @brief Sets the parameter value validator
   /// @param valueValidator parameter value validator
   void SetValueValidator(std::function<bool(T)> valueValidator) {
-    LockGuard lg(*this);
+    LockGuard lg(mutex);
     this->valueValidator = valueValidator;
   }
 
   /// @brief Sets the valid parameter values
   /// @param validValues valid parameter values
   void SetValidValues(std::vector<T> validValues) {
-    LockGuard lg(*this);
+    LockGuard lg(mutex);
     this->valueValidator = [validValues](T value){ return std::find(validValues.begin(), validValues.end(), value) != validValues.end(); };
   }
 
