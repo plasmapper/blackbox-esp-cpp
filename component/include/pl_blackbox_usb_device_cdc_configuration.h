@@ -1,7 +1,7 @@
 #pragma once
 #include "pl_blackbox_hardware_interface_configuration.h"
 
-#if TINYUSB_CDC_ENABLED
+#if CONFIG_TINYUSB_CDC_ENABLED
 
 #include "pl_usb.h"
 

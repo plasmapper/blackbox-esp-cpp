@@ -1,7 +1,7 @@
 #include "pl_blackbox_usb_device_cdc_configuration.h"
 #include "esp_check.h"
 
-#if TINYUSB_CDC_ENABLED
+#if CONFIG_TINYUSB_CDC_ENABLED
 
 //==============================================================================
 

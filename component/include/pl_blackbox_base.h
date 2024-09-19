@@ -101,7 +101,7 @@ public:
   std::shared_ptr<BlackBoxNetworkInterfaceConfiguration> AddNetworkInterfaceConfiguration(std::shared_ptr<NetworkInterface> hardwareInterface, std::string nvsNamespaceName);
   std::shared_ptr<BlackBoxEthernetConfiguration> AddEthernetConfiguration(std::shared_ptr<Ethernet> hardwareInterface, std::string nvsNamespaceName);
   std::shared_ptr<BlackBoxWiFiStationConfiguration> AddWiFiConfiguration(std::shared_ptr<WiFiStation> hardwareInterface, std::string nvsNamespaceName);
-#if TINYUSB_CDC_ENABLED
+#if CONFIG_TINYUSB_CDC_ENABLED
   std::shared_ptr<BlackBoxUsbDeviceCdcConfiguration> AddUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> hardwareInterface, std::string nvsNamespaceName);
 #endif
 

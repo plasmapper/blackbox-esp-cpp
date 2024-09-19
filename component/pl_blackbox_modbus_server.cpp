@@ -287,7 +287,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationIR::OnRead() {
   if (dynamic_cast<PL::WiFiStation*>(hardwareInterface.get()))
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::wifiStation;
 
-#if TINYUSB_CDC_ENABLED
+#if CONFIG_TINYUSB_CDC_ENABLED
   if (dynamic_cast<PL::UsbDeviceCdc*>(hardwareInterface.get()))
     ir.common.type = (uint16_t)BlackBoxHardwareInterfaceType::usbDeviceCdc;
 #endif

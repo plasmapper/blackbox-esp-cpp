@@ -167,7 +167,7 @@ std::shared_ptr<BlackBoxWiFiStationConfiguration> BlackBox::AddWiFiConfiguration
 
 //==============================================================================
 
-#if TINYUSB_CDC_ENABLED
+#if CONFIG_TINYUSB_CDC_ENABLED
 std::shared_ptr<BlackBoxUsbDeviceCdcConfiguration> BlackBox::AddUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> hardwareInterface, std::string nvsNamespaceName) {
   auto configuration = std::make_shared<BlackBoxUsbDeviceCdcConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
