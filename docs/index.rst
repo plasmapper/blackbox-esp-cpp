@@ -59,8 +59,8 @@ API reference
   
   api/types      
   api/blackbox_base
-  api/blackbox_configuration_parameter
   api/blackbox_configuration
+  api/blackbox_configuration_parameter
   api/blackbox_hardware_interface_configuration
   api/blackbox_uart_configuration
   api/blackbox_network_interface_configuration
