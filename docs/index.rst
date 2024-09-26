@@ -5,7 +5,7 @@ BlackBox Component
 
 .. |ESP_IDF_VERSION| replace:: 5.3
    
-.. |VERSION| replace:: 1.0.0
+.. |VERSION| replace:: 2.0.2
 
 .. include:: ../../../installation.rst
 
