@@ -394,8 +394,6 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationIR::OnRead() {
 
   auto server = blackBox.GetServerConfigurations()[modbusServer.selectedServerIndex]->GetServer();
 
-  size_t maxNameSize = BlackBoxModbusServer::maxNameSize;
-
   auto name = server->GetName();
   memcpy(ir.common.name, name.data(), std::min(maxNameSize, name.size()));
 

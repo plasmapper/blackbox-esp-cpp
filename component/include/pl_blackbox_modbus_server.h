@@ -11,27 +11,27 @@ namespace PL {
 class BlackBoxModbusServer : public ModbusServer {
 public:
   /// @brief Memory area size for holding and input registers
-  inline static const uint16_t registerMemoryAreaSize = 200;
+  static constexpr uint16_t registerMemoryAreaSize = 200;
   /// @brief Memory area size for coils
-  inline static const uint16_t coilMemoryAreaSize = 4;
+  static constexpr uint16_t coilMemoryAreaSize = 4;
   /// @brief General configuration memory address
-  static const uint16_t generalConfigurationMemoryAddress = 0;
+  static constexpr uint16_t generalConfigurationMemoryAddress = 0;
   /// @brief Hardware interface configuration memory address
-  static const uint16_t hardwareInterfaceConfigurationMemoryAddress = generalConfigurationMemoryAddress + registerMemoryAreaSize / 2;
+  static constexpr uint16_t hardwareInterfaceConfigurationMemoryAddress = generalConfigurationMemoryAddress + registerMemoryAreaSize / 2;
   /// @brief Server configuration memory address
-  static const uint16_t serverConfigurationMemoryAddress = hardwareInterfaceConfigurationMemoryAddress + registerMemoryAreaSize / 2;
+  static constexpr uint16_t serverConfigurationMemoryAddress = hardwareInterfaceConfigurationMemoryAddress + registerMemoryAreaSize / 2;
 
   /// @brief BlackBox signature
   static const std::string plbbSignature;
   /// @brief Memory map version
-  static const uint16_t memoryMapVersion = 1;
+  static constexpr uint16_t memoryMapVersion = 1;
 
   /// @brief Maximum device, firmware and hardware name size
-  inline static const size_t maxNameSize = 32;
+  static constexpr size_t maxNameSize = 32;
   /// @brief Maximum Wi-Fi SSID size
-  inline static const size_t maxWiFiSsidSize = 32;
+  static constexpr size_t maxWiFiSsidSize = 32;
   /// @brief Maximum Wi-Fi password size
-  inline static const size_t maxWiFiPasswordSize = 64;
+  static constexpr size_t maxWiFiPasswordSize = 64;
 
   /// @brief Creates a stream BlackBox Modbus server with shared transaction buffer
   /// @param blackBox BlackBox
