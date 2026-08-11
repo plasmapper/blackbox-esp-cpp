@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.22)
 
 idf_component_register(SRCS "pl_blackbox_base.cpp" 
                        "pl_blackbox_hardware_interface_configuration.cpp" "pl_blackbox_uart_configuration.cpp" 

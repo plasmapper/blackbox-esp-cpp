@@ -36,6 +36,7 @@ std::string BlackBox::GetHardwareInfoNvsNamespaceName() {
 void BlackBox::SetHardwareInfoNvsNamespaceName(const std::string& nvsNamespaceName) {
   LockGuard lg(mutex);
   hardwareInfoNvsNamespaceName = nvsNamespaceName;
+  hardwareInfoLoaded = false;
 }
 
 //==============================================================================
@@ -49,7 +50,6 @@ std::string BlackBox::GetGeneralConfigurationNvsNamespaceName() {
 void BlackBox::SetGeneralConfigurationNvsNamespaceName(const std::string& nvsNamespaceName) {
   LockGuard lg(mutex);
   generalConfiguration->SetNvsNamespaceName(nvsNamespaceName);
-  hardwareInfoLoaded = false;
 }
 
 //==============================================================================

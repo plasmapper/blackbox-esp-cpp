@@ -2,7 +2,7 @@
 
 //==============================================================================
 
-const char * const TAG = "pl_blackbox_server_configuration";
+static const char* TAG = "pl_blackbox_server_configuration";
 
 //==============================================================================
 

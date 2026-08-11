@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - BlackBoxHardwareInterfaceConfiguration unlock log tag.
+- Hardware info cache invalidation on NVS namespace change.
 
 ## [2.0.2] - 2024-09-26
 ### Fixed
