@@ -117,12 +117,14 @@ void BlackBox::ClearRestartedFlag() {
 //==============================================================================
 
 void BlackBox::AddConfiguration(std::shared_ptr<BlackBoxConfiguration> configuration) {
+  LockGuard lg(mutex);
   allConfigurations.push_back(configuration);
 }
 
 //==============================================================================
 
 std::shared_ptr<BlackBoxHardwareInterfaceConfiguration> BlackBox::AddHardwareInterfaceConfiguration(std::shared_ptr<HardwareInterface> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxHardwareInterfaceConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -132,6 +134,7 @@ std::shared_ptr<BlackBoxHardwareInterfaceConfiguration> BlackBox::AddHardwareInt
 //==============================================================================
 
 std::shared_ptr<BlackBoxUartConfiguration> BlackBox::AddUartConfiguration(std::shared_ptr<Uart> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxUartConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -141,6 +144,7 @@ std::shared_ptr<BlackBoxUartConfiguration> BlackBox::AddUartConfiguration(std::s
 //==============================================================================
 
 std::shared_ptr<BlackBoxNetworkInterfaceConfiguration> BlackBox::AddNetworkInterfaceConfiguration(std::shared_ptr<NetworkInterface> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxNetworkInterfaceConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -150,6 +154,7 @@ std::shared_ptr<BlackBoxNetworkInterfaceConfiguration> BlackBox::AddNetworkInter
 //==============================================================================
 
 std::shared_ptr<BlackBoxEthernetConfiguration> BlackBox::AddEthernetConfiguration(std::shared_ptr<Ethernet> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxEthernetConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -159,6 +164,7 @@ std::shared_ptr<BlackBoxEthernetConfiguration> BlackBox::AddEthernetConfiguratio
 //==============================================================================
 
 std::shared_ptr<BlackBoxWiFiStationConfiguration> BlackBox::AddWiFiConfiguration(std::shared_ptr<WiFiStation> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxWiFiStationConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -169,6 +175,7 @@ std::shared_ptr<BlackBoxWiFiStationConfiguration> BlackBox::AddWiFiConfiguration
 
 #if CONFIG_TINYUSB_CDC_ENABLED
 std::shared_ptr<BlackBoxUsbDeviceCdcConfiguration> BlackBox::AddUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> hardwareInterface, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxUsbDeviceCdcConfiguration>(hardwareInterface, nvsNamespaceName);
   hardwareInterfaceConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -179,6 +186,7 @@ std::shared_ptr<BlackBoxUsbDeviceCdcConfiguration> BlackBox::AddUsbDeviceCdcConf
 //==============================================================================
 
 std::shared_ptr<BlackBoxServerConfiguration> BlackBox::AddServerConfiguration(std::shared_ptr<Server> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -188,6 +196,7 @@ std::shared_ptr<BlackBoxServerConfiguration> BlackBox::AddServerConfiguration(st
 //==============================================================================
 
 std::shared_ptr<BlackBoxStreamServerConfiguration> BlackBox::AddStreamServerConfiguration(std::shared_ptr<StreamServer> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxStreamServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -197,6 +206,7 @@ std::shared_ptr<BlackBoxStreamServerConfiguration> BlackBox::AddStreamServerConf
 //==============================================================================
 
 std::shared_ptr<BlackBoxNetworkServerConfiguration> BlackBox::AddNetworkServerConfiguration(std::shared_ptr<NetworkServer> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxNetworkServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -206,6 +216,7 @@ std::shared_ptr<BlackBoxNetworkServerConfiguration> BlackBox::AddNetworkServerCo
 //==============================================================================
 
 std::shared_ptr<BlackBoxModbusServerConfiguration> BlackBox::AddModbusServerConfiguration(std::shared_ptr<ModbusServer> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxModbusServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -215,6 +226,7 @@ std::shared_ptr<BlackBoxModbusServerConfiguration> BlackBox::AddModbusServerConf
 //==============================================================================
 
 std::shared_ptr<BlackBoxHttpServerConfiguration> BlackBox::AddHttpServerConfiguration(std::shared_ptr<HttpServer> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxHttpServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
@@ -224,6 +236,7 @@ std::shared_ptr<BlackBoxHttpServerConfiguration> BlackBox::AddHttpServerConfigur
 //==============================================================================
 
 std::shared_ptr<BlackBoxMdnsServerConfiguration> BlackBox::AddMdnsServerConfiguration(std::shared_ptr<MdnsServer> server, std::string nvsNamespaceName) {
+  LockGuard lg(mutex);
   auto configuration = std::make_shared<BlackBoxMdnsServerConfiguration>(server, nvsNamespaceName);
   serverConfigurations.push_back(configuration);
   allConfigurations.push_back(configuration);
