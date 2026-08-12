@@ -38,7 +38,7 @@ public:
   esp_err_t SetValue(T value) {
     LockGuard lg(mutex);
     if (this->value != value) {
-      ESP_RETURN_ON_FALSE(valueValidator(value), ESP_ERR_INVALID_ARG, CONFIG_PARAM_TAG, "parameter value validation failed");
+      ESP_RETURN_ON_FALSE(valueValidator(value), ESP_ERR_INVALID_ARG, CONFIG_PARAM_TAG, "parameter value validation failed or the validator is not configured");
       this->value = value;
     }
     return ESP_OK;

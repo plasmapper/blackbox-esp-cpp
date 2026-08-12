@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lock timeout handling.
 - Static const members to constexpr.
 - BlackBoxModbusServerConfiguration port and maxNumberOfClients initialization to avoid SetValidValues/SetValue detour.
+- BlackBoxConfigurationParameter rejected value log message to hint at missing validator configuration.
 
 ### Fixed
 - BlackBoxHardwareInterfaceConfiguration unlock log tag.
