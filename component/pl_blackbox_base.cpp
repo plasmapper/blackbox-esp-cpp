@@ -97,7 +97,6 @@ void BlackBox::SetDeviceName(const std::string& name) {
 esp_err_t BlackBox::Restart() {
   LockGuard lg(mutex);
   esp_restart();
-  return ESP_OK;
 }
 
 //==============================================================================

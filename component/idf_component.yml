@@ -1,4 +1,4 @@
-version: "2.0.2"
+version: "2.1.0"
 license: "MIT"
 description: BlackBox C++ class component for ESP-IDF
 url: https://github.com/plasmapper/blackbox-esp-cpp
