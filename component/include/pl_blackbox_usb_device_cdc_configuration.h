@@ -18,9 +18,6 @@ public:
   /// @param usbDeviceCdc USB device CDC
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> usbDeviceCdc, std::string nvsNamespaceName);
-
-private:
-  std::shared_ptr<UsbDeviceCdc> usbDeviceCdc;
 };
 
 //==============================================================================

@@ -14,9 +14,6 @@ public:
   /// @param streamServer stream server
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxStreamServerConfiguration(std::shared_ptr<StreamServer> streamServer, std::string nvsNamespaceName);
-
-private:
-  std::shared_ptr<StreamServer> streamServer;
 };
 
 //==============================================================================

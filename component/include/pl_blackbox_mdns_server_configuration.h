@@ -15,9 +15,6 @@ public:
   /// @param mDnsServer mDNS server
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxMdnsServerConfiguration(std::shared_ptr<MdnsServer> mdnsServer, std::string nvsNamespaceName);
-
-private:
-  std::shared_ptr<MdnsServer> mdnsServer;
 };
 
 //==============================================================================

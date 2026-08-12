@@ -7,7 +7,7 @@ namespace PL {
 //==============================================================================
 
 BlackBoxMdnsServerConfiguration::BlackBoxMdnsServerConfiguration(std::shared_ptr<MdnsServer> mdnsServer, std::string nvsNamespaceName) :
-    BlackBoxNetworkServerConfiguration(mdnsServer, nvsNamespaceName), mdnsServer(mdnsServer) { }
+    BlackBoxNetworkServerConfiguration(mdnsServer, nvsNamespaceName) { }
 
 //==============================================================================
 

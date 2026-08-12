@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BlackBoxServerConfiguration to implement Lockable, matching BlackBoxHardwareInterfaceConfiguration.
 - BlackBoxHardwareInterfaceConfiguration and BlackBoxServerConfiguration mutex member to private.
 
+### Removed
+- Unused hardware interface and server members from BlackBoxEthernetConfiguration, BlackBoxUsbDeviceCdcConfiguration, BlackBoxStreamServerConfiguration, BlackBoxHttpServerConfiguration and BlackBoxMdnsServerConfiguration.
+
 ### Fixed
 - BlackBoxHardwareInterfaceConfiguration unlock log tag.
 - Hardware info cache invalidation on NVS namespace change.

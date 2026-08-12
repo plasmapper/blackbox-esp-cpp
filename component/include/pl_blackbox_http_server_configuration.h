@@ -15,9 +15,6 @@ public:
   /// @param httpServer HTTP server
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxHttpServerConfiguration(std::shared_ptr<HttpServer> httpServer, std::string nvsNamespaceName);
-
-private:
-  std::shared_ptr<HttpServer> httpServer;
 };
 
 //==============================================================================

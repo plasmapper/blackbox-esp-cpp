@@ -7,7 +7,7 @@ namespace PL {
 //==============================================================================
 
 BlackBoxStreamServerConfiguration::BlackBoxStreamServerConfiguration(std::shared_ptr<StreamServer> streamServer, std::string nvsNamespaceName) :
-    BlackBoxServerConfiguration(streamServer, nvsNamespaceName), streamServer(streamServer) { }
+    BlackBoxServerConfiguration(streamServer, nvsNamespaceName) { }
 
 //==============================================================================
 

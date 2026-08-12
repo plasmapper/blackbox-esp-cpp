@@ -14,9 +14,6 @@ public:
   /// @param ethernet Ethernet
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxEthernetConfiguration(std::shared_ptr<Ethernet> ethernet, std::string nvsNamespaceName);
-
-private:
-  std::shared_ptr<Ethernet> ethernet;
 };
 
 //==============================================================================

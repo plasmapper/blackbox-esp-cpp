@@ -10,7 +10,7 @@ namespace PL {
 //==============================================================================
 
 BlackBoxUsbDeviceCdcConfiguration::BlackBoxUsbDeviceCdcConfiguration(std::shared_ptr<UsbDeviceCdc> usbDeviceCdc, std::string nvsNamespaceName) :
-    BlackBoxHardwareInterfaceConfiguration(usbDeviceCdc, nvsNamespaceName), usbDeviceCdc(usbDeviceCdc) { }
+    BlackBoxHardwareInterfaceConfiguration(usbDeviceCdc, nvsNamespaceName) { }
 
 //==============================================================================
 
