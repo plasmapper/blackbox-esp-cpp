@@ -20,8 +20,8 @@ public:
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxHardwareInterfaceConfiguration(std::shared_ptr<HardwareInterface> hardwareInterface, std::string nvsNamespaceName);
   ~BlackBoxHardwareInterfaceConfiguration() {}
-  BlackBoxHardwareInterfaceConfiguration(const BlackBoxConfiguration&) = delete;
-  BlackBoxHardwareInterfaceConfiguration& operator=(const BlackBoxConfiguration&) = delete;
+  BlackBoxHardwareInterfaceConfiguration(const BlackBoxHardwareInterfaceConfiguration&) = delete;
+  BlackBoxHardwareInterfaceConfiguration& operator=(const BlackBoxHardwareInterfaceConfiguration&) = delete;
 
   /// @brief enabled parameter
   BlackBoxConfigurationParameter<bool> enabled = BlackBoxConfigurationParameter<bool>(true);

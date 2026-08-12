@@ -20,8 +20,8 @@ public:
   /// @param nvsNamespaceName NVS namespace name
   BlackBoxServerConfiguration(std::shared_ptr<Server> server, std::string nvsNamespaceName);
   ~BlackBoxServerConfiguration() {}
-  BlackBoxServerConfiguration(const BlackBoxConfiguration&) = delete;
-  BlackBoxServerConfiguration& operator=(const BlackBoxConfiguration&) = delete;
+  BlackBoxServerConfiguration(const BlackBoxServerConfiguration&) = delete;
+  BlackBoxServerConfiguration& operator=(const BlackBoxServerConfiguration&) = delete;
 
   /// @brief enabled parameter
   BlackBoxConfigurationParameter<bool> enabled = BlackBoxConfigurationParameter<bool>(true);
