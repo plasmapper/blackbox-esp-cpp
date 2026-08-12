@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Lock timeout handling.
 - Static const members to constexpr.
+- BlackBoxModbusServerConfiguration port and maxNumberOfClients initialization to avoid SetValidValues/SetValue detour.
 
 ### Fixed
 - BlackBoxHardwareInterfaceConfiguration unlock log tag.

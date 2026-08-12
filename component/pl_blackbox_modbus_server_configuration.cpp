@@ -15,19 +15,19 @@ const std::string BlackBoxModbusServerConfiguration::maxNumberOfClientsNvsKey = 
 
 BlackBoxModbusServerConfiguration::BlackBoxModbusServerConfiguration(std::shared_ptr<ModbusServer> modbusServer, std::string nvsNamespaceName) :
     BlackBoxServerConfiguration(modbusServer, nvsNamespaceName), protocol(modbusServer->GetProtocol()), stationAddress(modbusServer->GetStationAddress()),
-    port(0), maxNumberOfClients(0), modbusServer(modbusServer) {
-  if (auto baseServer = modbusServer->GetBaseServer().lock()) {
-    if (auto networkServer = dynamic_cast<NetworkServer*>(baseServer.get())) {
-      uint16_t portValue = networkServer->GetPort();
-      port.SetValidValues(std::vector<uint16_t> { portValue });
-      port.SetValue(portValue);
-
-      size_t maxNumberOfClientsValue = networkServer->GetMaxNumberOfClients();
-      maxNumberOfClients.SetValidValues(std::vector<size_t> { maxNumberOfClientsValue });
-      maxNumberOfClients.SetValue(maxNumberOfClientsValue);
-    }
-  }
-}
+    port([&modbusServer]() -> uint16_t {
+      if (auto baseServer = modbusServer->GetBaseServer().lock())
+        if (auto networkServer = dynamic_cast<NetworkServer*>(baseServer.get()))
+          return networkServer->GetPort();
+      return 0;
+    }()),
+    maxNumberOfClients([&modbusServer]() -> size_t {
+      if (auto baseServer = modbusServer->GetBaseServer().lock())
+        if (auto networkServer = dynamic_cast<NetworkServer*>(baseServer.get()))
+          return networkServer->GetMaxNumberOfClients();
+      return 0;
+    }()),
+    modbusServer(modbusServer) { }
 
 //==============================================================================
 
