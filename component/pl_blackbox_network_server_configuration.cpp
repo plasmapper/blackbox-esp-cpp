@@ -20,7 +20,7 @@ void BlackBoxNetworkServerConfiguration::Load() {
   LockGuard lg(mutex);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readOnly);
   uint16_t u16Value;
-  uint16_t u32Value;
+  uint32_t u32Value;
 
   if (nvsNamespace.Read(portNvsKey, u16Value) == ESP_OK)
     port.SetValue(u16Value);
