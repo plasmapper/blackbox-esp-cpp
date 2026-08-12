@@ -60,6 +60,7 @@ public:
 
   /// @brief Disables the parameter value validation
   void DisableValueValidation() {
+    LockGuard lg(mutex);
     this->valueValidator = [](T value) { return true; };
   }
 
