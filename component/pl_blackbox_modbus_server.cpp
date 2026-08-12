@@ -235,7 +235,7 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnWrite() {
     std::string ssid(hr.wifi.ssid, maxWiFiSsidSize);
     wifiStationConfiguration->ssid.SetValue(ssid.c_str());
     bool passwordIsValid = true;
-    for (int i = 0; i < hr.wifi.password[i] && i < sizeof(hr.wifi.password); i++) {
+    for (size_t i = 0; hr.wifi.password[i] && i < sizeof(hr.wifi.password); i++) {
       if (hr.wifi.password[i] < 32 || hr.wifi.password[i] > 126)
         passwordIsValid = false;
     }

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hardware info cache invalidation on NVS namespace change.
 - Missing mutex locking in BlackBox configuration adder methods.
 - BlackBoxNetworkServerConfiguration maxNumberOfClients NVS type mismatch on load.
+- BlackBoxModbusServer Wi-Fi password validity loop condition.
 
 ## [2.0.2] - 2024-09-26
 ### Fixed
