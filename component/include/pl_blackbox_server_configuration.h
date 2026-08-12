@@ -10,7 +10,7 @@ namespace PL {
 //==============================================================================
 
 /// @brief BlackBox server configuration
-class BlackBoxServerConfiguration : public BlackBoxConfiguration {
+class BlackBoxServerConfiguration : public Lockable, public BlackBoxConfiguration {
 public:
   /// @brief enabled parameter NVS key
   static const std::string enabledNvsKey;
@@ -30,6 +30,8 @@ public:
   /// @return server
   std::shared_ptr<Server> GetServer();
 
+  esp_err_t Lock(TickType_t timeout = portMAX_DELAY) override;
+  esp_err_t Unlock() override;
   void Load() override;
   void Save() override;
   void Erase() override;
@@ -38,10 +40,10 @@ public:
   virtual void Apply();
 
 protected:
-  Mutex mutex;
   std::string nvsNamespaceName;
 
 private:
+  Mutex mutex;
   std::shared_ptr<Server> server;
 };
 

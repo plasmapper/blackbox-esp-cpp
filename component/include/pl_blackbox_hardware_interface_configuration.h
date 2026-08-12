@@ -40,10 +40,10 @@ public:
   virtual void Apply();
 
 protected:
-  Mutex mutex;
   std::string nvsNamespaceName;
 
 private:
+  Mutex mutex;
   std::shared_ptr<HardwareInterface> hardwareInterface;
 };
 

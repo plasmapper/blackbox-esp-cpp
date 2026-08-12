@@ -20,15 +20,31 @@ BlackBoxServerConfiguration::BlackBoxServerConfiguration(std::shared_ptr<Server>
 
 //==============================================================================
 
+esp_err_t BlackBoxServerConfiguration::Lock(TickType_t timeout) {
+  esp_err_t error = mutex.Lock(timeout);
+  if (error != ESP_OK && (error != ESP_ERR_TIMEOUT || timeout != 0))
+    ESP_LOGE(TAG, "mutex lock failed");
+  return error;
+}
+
+//==============================================================================
+
+esp_err_t BlackBoxServerConfiguration::Unlock() {
+  ESP_RETURN_ON_ERROR(mutex.Unlock(), TAG, "mutex unlock failed");
+  return ESP_OK;
+}
+
+//==============================================================================
+
 std::shared_ptr<Server> BlackBoxServerConfiguration::GetServer() {
-  LockGuard lg(mutex);
+  LockGuard lg(*this);
   return server;
 }
 
 //==============================================================================
 
 void BlackBoxServerConfiguration::Load() {
-  LockGuard lg(mutex);
+  LockGuard lg(*this);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readOnly);
   uint8_t u8Value;
 
@@ -39,7 +55,7 @@ void BlackBoxServerConfiguration::Load() {
 //==============================================================================
 
 void BlackBoxServerConfiguration::Save() {
-  LockGuard lg(mutex);
+  LockGuard lg(*this);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
 
   nvsNamespace.Write(enabledNvsKey, (uint8_t)enabled.GetValue());
@@ -48,7 +64,7 @@ void BlackBoxServerConfiguration::Save() {
 //==============================================================================
 
 void BlackBoxServerConfiguration::Erase() {
-  LockGuard lg(mutex);
+  LockGuard lg(*this);
   NvsNamespace nvsNamespace(nvsNamespaceName, NvsAccessMode::readWrite);
   nvsNamespace.Erase();
 }
@@ -56,7 +72,7 @@ void BlackBoxServerConfiguration::Erase() {
 //==============================================================================
 
 void BlackBoxServerConfiguration::Apply() {
-  LockGuard lg(mutex, *server);
+  LockGuard lg(*this, *server);
 
   if (enabled.GetValue())
     server->Enable();
