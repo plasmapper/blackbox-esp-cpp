@@ -43,7 +43,7 @@ public:
 
   /// @brief Creates a BlackBox device
   BlackBox();
-  ~BlackBox() {}
+  virtual ~BlackBox() = default;
   BlackBox(const BlackBox&) = delete;
   BlackBox& operator=(const BlackBox&) = delete;
 

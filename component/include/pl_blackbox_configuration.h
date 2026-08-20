@@ -9,6 +9,9 @@ namespace PL {
 /// @brief Base class for a BlackBox configuration
 class BlackBoxConfiguration {
 public:
+  BlackBoxConfiguration() = default;
+  virtual ~BlackBoxConfiguration() = default;
+
   /// @brief Loads the configuration
   virtual void Load() = 0;
 
