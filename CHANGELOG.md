@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Virtual destructors to BlackBox and BlackBoxConfiguration.
 
+### Changed
+- BlackBoxConfiguration to be non-copyable.
+
 ### Fixed
 - BlackBoxModbusServer base server task not being stopped before the derived object is destroyed.
 
