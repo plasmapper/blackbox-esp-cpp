@@ -39,6 +39,12 @@ BlackBoxModbusServer::BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, u
 
 //==============================================================================
 
+BlackBoxModbusServer::~BlackBoxModbusServer() {
+  StopTask();
+}
+
+//==============================================================================
+
 void BlackBoxModbusServer::AddMemoryAreas() {
   memoryDataBuffer = std::make_shared<PL::TypedBuffer<MemoryData>>(&memoryData);
 

@@ -61,6 +61,10 @@ public:
   /// @param bufferSize transaction buffer size
   BlackBoxModbusServer(std::shared_ptr<BlackBox> blackBox, uint16_t port, size_t bufferSize = defaultBufferSize);
 
+  /// @note Every derived class must call StopTask as the first statement of its own destructor
+  /// so that the base server task does not access partially destroyed memory areas.
+  ~BlackBoxModbusServer();
+
 private:
   std::shared_ptr<BlackBox> blackBox;
   uint16_t selectedHardwareInterfaceIndex = 0;
