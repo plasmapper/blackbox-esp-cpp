@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - BlackBoxModbusServer base server task not being stopped before the derived object is destroyed.
+- Lock-order inversion between BlackBox::mutex and the server mutexes when applying configurations.
 
 ## [2.1.1] - 2026-08-20
 ### Fixed

@@ -290,16 +290,18 @@ void BlackBox::EraseAllConfigurations() {
 //==============================================================================
 
 void BlackBox::ApplyHardwareInterfaceConfigurations() {
-  LockGuard lg(mutex);
-  for (auto& configuration : hardwareInterfaceConfigurations)
+  // Snapshotting and releasing the mutex before calling Apply() avoids a lock-order inversion with the
+  // Modbus request path, which takes the server lock first and BlackBox::mutex second (via GetHardwareInterfaceConfigurations/GetServerConfigurations).
+  for (auto& configuration : GetHardwareInterfaceConfigurations())
     configuration->Apply();
 }
 
 //==============================================================================
 
 void BlackBox::ApplyServerConfigurations() {
-  LockGuard lg(mutex);
-  for (auto& configuration : serverConfigurations)
+  // Snapshotting and releasing the mutex before calling Apply() avoids a lock-order inversion with the
+  // Modbus request path, which takes the server lock first and BlackBox::mutex second (via GetHardwareInterfaceConfigurations/GetServerConfigurations).
+  for (auto& configuration : GetServerConfigurations())
     configuration->Apply();
 }
 
