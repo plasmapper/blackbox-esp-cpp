@@ -89,10 +89,6 @@ esp_err_t BlackBoxModbusServer::GeneralConfigurationHR::OnWrite() {
 
   auto& hr = modbusServer.memoryDataBuffer->data->generalConfigurationHR;
 
-  if (hr.restart)
-    blackBox.Restart();
-  if (hr.saveConfiguration)
-    blackBox.SaveAllConfigurations();
   if (hr.clearRestartedFlag)
     blackBox.ClearRestartedFlag();
   std::string name(hr.name, maxNameSize);
@@ -103,6 +99,10 @@ esp_err_t BlackBoxModbusServer::GeneralConfigurationHR::OnWrite() {
   size_t numberOfServers = blackBox.GetServerConfigurations().size();
   if (numberOfServers)
     modbusServer.selectedServerIndex = std::min(hr.selectedServerIndex, (uint16_t)(numberOfServers - 1));
+  if (hr.saveConfiguration)
+    blackBox.SaveAllConfigurations();
+  if (hr.restart)
+    blackBox.Restart();
   return ESP_OK;
 }
 
