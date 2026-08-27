@@ -23,7 +23,9 @@ public:
   /// @brief SSID parameter
   BlackBoxConfigurationParameter<std::string> ssid;
 
-    /// @brief password parameter
+  /// @brief password parameter
+  /// @note Stored in NVS as plaintext, like the rest of the configuration. Enable ESP-IDF's NVS encryption
+  /// (CONFIG_NVS_ENCRYPTION, nvs_flash_secure_init) if necessary.
   BlackBoxConfigurationParameter<std::string> password;
 
   void Load() override;

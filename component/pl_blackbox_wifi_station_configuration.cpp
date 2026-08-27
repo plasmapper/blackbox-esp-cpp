@@ -46,9 +46,17 @@ void BlackBoxWiFiStationConfiguration::Save() {
 
 void BlackBoxWiFiStationConfiguration::Apply() {
   LockGuard lg(*this, *wifiStation);
-  
+
+  bool ssidChanged = wifiStation->GetSsid() != ssid.GetValue();
+  bool passwordChanged = wifiStation->GetPassword() != password.GetValue();
+  bool restart = (ssidChanged || passwordChanged) && wifiStation->IsEnabled();
+
+  if (restart)
+    wifiStation->Disable();
   wifiStation->SetSsid(ssid.GetValue());
   wifiStation->SetPassword(password.GetValue());
+  if (restart)
+    wifiStation->Enable();
 
   BlackBoxNetworkInterfaceConfiguration::Apply();
 }

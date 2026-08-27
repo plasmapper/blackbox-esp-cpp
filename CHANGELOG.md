@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BlackBoxModbusServer base server task not being stopped before the derived object is destroyed.
 - Lock-order inversion between BlackBox::mutex and the server mutexes when applying configurations.
 - GeneralConfigurationHR::OnWrite restarting or saving before applying the rest of the data.
+- BlackBoxWiFiStationConfiguration::Apply restarting Wi-Fi twice if both SSID and password changed.
 
 ## [2.1.1] - 2026-08-20
 ### Fixed
