@@ -7,9 +7,6 @@ namespace PL {
 
 //==============================================================================
 
-const std::string BlackBox::defaultHardwareInfoNvsNamespaceName = "plbbHwInfo";
-const std::string BlackBox::defaultGeneralConfigurationNvsNamespaceName = "plbbConfig";
-
 const std::string BlackBox::hardwareInfoNameNvsKey = "name";
 const std::string BlackBox::hardwareInfoMajorVersionNvsKey = "verMajor";
 const std::string BlackBox::hardwareInfoMinorVersionNvsKey = "verMinor";

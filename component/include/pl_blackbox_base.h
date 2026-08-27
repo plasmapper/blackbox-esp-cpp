@@ -23,9 +23,9 @@ namespace PL {
 class BlackBox {
 public:
   /// @brief Default hardware info NVS namespace
-  static const std::string defaultHardwareInfoNvsNamespaceName;
+  static constexpr const char* defaultHardwareInfoNvsNamespaceName = "plbbHwInfo";
   /// @brief Default general configuration NVS namespace
-  static const std::string defaultGeneralConfigurationNvsNamespaceName;
+  static constexpr const char* defaultGeneralConfigurationNvsNamespaceName = "plbbConfig";
 
   /// @brief Hardware name NVS key
   static const std::string hardwareInfoNameNvsKey;
