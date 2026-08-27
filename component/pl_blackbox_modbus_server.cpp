@@ -152,11 +152,11 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnRead() {
   memset(modbusServer.memoryDataBuffer->data, 0, registerMemoryAreaSize);
   auto& hr = modbusServer.memoryDataBuffer->data->hardwareInterfaceConfigurationHR;
 
-  size_t numberOfHardwareInterfaces = blackBox.GetHardwareInterfaceConfigurations().size();
-  if (!numberOfHardwareInterfaces || modbusServer.selectedHardwareInterfaceIndex >= numberOfHardwareInterfaces)
+  auto hardwareInterfaceConfigurations = blackBox.GetHardwareInterfaceConfigurations();
+  if (modbusServer.selectedHardwareInterfaceIndex >= hardwareInterfaceConfigurations.size())
     return ESP_OK;
 
-  auto hardwareInterfaceConfiguration = blackBox.GetHardwareInterfaceConfigurations()[modbusServer.selectedHardwareInterfaceIndex];
+  auto hardwareInterfaceConfiguration = hardwareInterfaceConfigurations[modbusServer.selectedHardwareInterfaceIndex];
 
   hr.common.enabled = hardwareInterfaceConfiguration->enabled.GetValue();
 
@@ -206,11 +206,11 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationHR::OnWrite() {
 
   auto& hr = modbusServer.memoryDataBuffer->data->hardwareInterfaceConfigurationHR;
 
-  size_t numberOfHardwareInterfaces = blackBox.GetHardwareInterfaceConfigurations().size();
-  if (!numberOfHardwareInterfaces || modbusServer.selectedHardwareInterfaceIndex >= numberOfHardwareInterfaces)
+  auto hardwareInterfaceConfigurations = blackBox.GetHardwareInterfaceConfigurations();
+  if (modbusServer.selectedHardwareInterfaceIndex >= hardwareInterfaceConfigurations.size())
     return ESP_OK;
 
-  auto hardwareInterfaceConfiguration = blackBox.GetHardwareInterfaceConfigurations()[modbusServer.selectedHardwareInterfaceIndex];
+  auto hardwareInterfaceConfiguration = hardwareInterfaceConfigurations[modbusServer.selectedHardwareInterfaceIndex];
 
   hardwareInterfaceConfiguration->enabled.SetValue(hr.common.enabled);
 
@@ -269,11 +269,11 @@ esp_err_t BlackBoxModbusServer::HardwareInterfaceConfigurationIR::OnRead() {
   memset(modbusServer.memoryDataBuffer->data, 0, BlackBoxModbusServer::registerMemoryAreaSize);
   auto& ir = modbusServer.memoryDataBuffer->data->hardwareInterfaceConfigurationIR;
 
-  size_t numberOfHardwareInterfaces = blackBox.GetHardwareInterfaceConfigurations().size();
-  if (!numberOfHardwareInterfaces || modbusServer.selectedHardwareInterfaceIndex >= numberOfHardwareInterfaces)
+  auto hardwareInterfaceConfigurations = blackBox.GetHardwareInterfaceConfigurations();
+  if (modbusServer.selectedHardwareInterfaceIndex >= hardwareInterfaceConfigurations.size())
     return ESP_OK;
 
-  auto hardwareInterface = blackBox.GetHardwareInterfaceConfigurations()[modbusServer.selectedHardwareInterfaceIndex]->GetHardwareInterface();
+  auto hardwareInterface = hardwareInterfaceConfigurations[modbusServer.selectedHardwareInterfaceIndex]->GetHardwareInterface();
 
   auto name = hardwareInterface->GetName();
   memcpy(ir.common.name, name.data(), std::min(maxNameSize, name.size()));
@@ -315,11 +315,11 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationHR::OnRead() {
   memset(modbusServer.memoryDataBuffer->data, 0, registerMemoryAreaSize);
   auto& hr = modbusServer.memoryDataBuffer->data->serverConfigurationHR;
 
-  size_t numberOfServers = blackBox.GetServerConfigurations().size();
-  if (!numberOfServers || modbusServer.selectedServerIndex >= numberOfServers)
+  auto serverConfigurations = blackBox.GetServerConfigurations();
+  if (modbusServer.selectedServerIndex >= serverConfigurations.size())
     return ESP_OK;
 
-  auto serverConfiguration = blackBox.GetServerConfigurations()[modbusServer.selectedServerIndex];
+  auto serverConfiguration = serverConfigurations[modbusServer.selectedServerIndex];
 
   hr.common.enabled = serverConfiguration->enabled.GetValue();
 
@@ -351,11 +351,11 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationHR::OnWrite() {
 
   auto& hr = modbusServer.memoryDataBuffer->data->serverConfigurationHR;
 
-  size_t numberOfServers = blackBox.GetServerConfigurations().size();
-  if (!numberOfServers || modbusServer.selectedServerIndex >= numberOfServers)
+  auto serverConfigurations = blackBox.GetServerConfigurations();
+  if (modbusServer.selectedServerIndex >= serverConfigurations.size())
     return ESP_OK;
 
-  auto serverConfiguration = blackBox.GetServerConfigurations()[modbusServer.selectedServerIndex];
+  auto serverConfiguration = serverConfigurations[modbusServer.selectedServerIndex];
 
   serverConfiguration->enabled.SetValue(hr.common.enabled);
 
@@ -394,11 +394,11 @@ esp_err_t BlackBoxModbusServer::ServerConfigurationIR::OnRead() {
   memset(modbusServer.memoryDataBuffer->data, 0, registerMemoryAreaSize);
   auto& ir = modbusServer.memoryDataBuffer->data->serverConfigurationIR;
 
-  size_t numberOfServers = blackBox.GetServerConfigurations().size();
-  if (!numberOfServers || modbusServer.selectedServerIndex >= numberOfServers)
+  auto serverConfigurations = blackBox.GetServerConfigurations();
+  if (modbusServer.selectedServerIndex >= serverConfigurations.size())
     return ESP_OK;
 
-  auto server = blackBox.GetServerConfigurations()[modbusServer.selectedServerIndex]->GetServer();
+  auto server = serverConfigurations[modbusServer.selectedServerIndex]->GetServer();
 
   auto name = server->GetName();
   memcpy(ir.common.name, name.data(), std::min(maxNameSize, name.size()));
