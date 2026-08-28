@@ -263,32 +263,31 @@ std::vector<std::shared_ptr<BlackBoxServerConfiguration>> BlackBox::GetServerCon
 //==============================================================================
 
 void BlackBox::LoadAllConfigurations() {
-  LockGuard lg(mutex);
-  for (auto& configuration : allConfigurations)
+  // Snapshotting and releasing the mutex before calling Load() avoids a potential lock-order inversion
+  for (auto& configuration : GetAllConfigurations())
     configuration->Load();
 }
 
 //==============================================================================
 
 void BlackBox::SaveAllConfigurations() {
-  LockGuard lg(mutex);
-  for (auto& configuration : allConfigurations)
+  // Snapshotting and releasing the mutex before calling Save() avoids a potential lock-order inversion
+  for (auto& configuration : GetAllConfigurations())
     configuration->Save();
 }
 
 //==============================================================================
 
 void BlackBox::EraseAllConfigurations() {
-  LockGuard lg(mutex);
-  for (auto& configuration : allConfigurations)
+  // Snapshotting and releasing the mutex before calling Erase() avoids a potential lock-order inversion
+  for (auto& configuration : GetAllConfigurations())
     configuration->Erase();
 }
 
 //==============================================================================
 
 void BlackBox::ApplyHardwareInterfaceConfigurations() {
-  // Snapshotting and releasing the mutex before calling Apply() avoids a lock-order inversion with the
-  // Modbus request path, which takes the server lock first and BlackBox::mutex second (via GetHardwareInterfaceConfigurations/GetServerConfigurations).
+  // Snapshotting and releasing the mutex before calling Apply() avoids a potential lock-order inversion
   for (auto& configuration : GetHardwareInterfaceConfigurations())
     configuration->Apply();
 }

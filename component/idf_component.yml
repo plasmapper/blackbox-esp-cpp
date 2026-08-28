@@ -1,17 +1,17 @@
-version: "2.2.0"
+version: "2.2.1"
 license: "MIT"
 description: BlackBox C++ class component for ESP-IDF
 url: https://github.com/plasmapper/blackbox-esp-cpp
 dependencies:
   idf: ">=5.3,<7.0"
   plasmapper/pl_common: "^2.2.0"
-  plasmapper/pl_uart: "^2.0.1"
-  plasmapper/pl_network: "^1.4.3"
-  plasmapper/pl_nvs: "^1.1.2"
-  plasmapper/pl_modbus: "^1.4.2"
-  plasmapper/pl_http: "^2.2.2"
-  plasmapper/pl_mdns: "^1.2.4"
+  plasmapper/pl_uart: "^2.0.2"
+  plasmapper/pl_network: "^1.4.4"
+  plasmapper/pl_nvs: "^1.1.3"
+  plasmapper/pl_modbus: "^1.4.3"
+  plasmapper/pl_http: "^2.2.3"
+  plasmapper/pl_mdns: "^1.2.5"
   plasmapper/pl_usb:
-    version: "^2.0.2"
+    version: "^2.0.3"
     rules:
       - if: "target in [esp32p4, esp32s2, esp32s3]"
